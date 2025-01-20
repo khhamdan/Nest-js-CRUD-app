@@ -28,4 +28,11 @@ export class TodosService {
 
     return await this.todoRepository.save(todo);
   }
+
+  async delete(id: number) {
+    const todo = await this.todoRepository.findOne({ where: { id } });
+
+    // check that record exists
+    return await this.todoRepository.remove(todo);
+  }
 }
