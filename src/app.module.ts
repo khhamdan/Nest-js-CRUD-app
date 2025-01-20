@@ -5,10 +5,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DataSource } from 'typeorm';
 import { TodosModule } from './todos/todos.module';
+import { join } from 'path';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
+
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -21,8 +23,8 @@ import { TodosModule } from './todos/todos.module';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        entities: [],
-        synchronize: true,
+        entities: [join(process.cwd(), 'dist/**/*.entity.js')],
+        synchronize: false,
       }),
       // dataSource receives the configured DataSourceOptions
       // and returns a Promise<DataSource>.
